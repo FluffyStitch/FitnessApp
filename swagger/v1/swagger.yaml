@@ -1,0 +1,301 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/current_user":
+    get:
+      summary: show current_user
+      security:
+      - api_key: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              examples:
+                test_example:
+                  value:
+                    data:
+                      id: '195'
+                      type: user
+                      attributes:
+                        username: Alaina
+        '401':
+          description: unauthorized
+  "/api/v1/exercises":
+    get:
+      summary: list exercises
+      security:
+      - api_key: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              examples:
+                test_example:
+                  value:
+                    data:
+                    - id: '124'
+                      type: exercise
+                      attributes:
+                        name: Swimming
+                        exercise_type: endurance
+                        explanation: Cum rem quisquam facilis optio minima. Odio nostrum
+                          quaerat exercitationem incidunt eum a. Tempora molestiae
+                          cumque tenetur nihil accusamus enim quis dicta. Vitae incidunt
+                          tempora ut odit occaecati. Sequi ipsam ratione at nemo dolor.
+                    - id: '125'
+                      type: exercise
+                      attributes:
+                        name: Volleyball
+                        exercise_type: endurance
+                        explanation: Nobis perspiciatis possimus labore eligendi unde
+                          illo saepe. Ipsam soluta impedit quod assumenda nam. Ullam
+                          libero voluptatibus aliquam magnam occaecati. Dolores minima
+                          quae porro dolor. Atque libero rerum ipsum explicabo.
+                    - id: '126'
+                      type: exercise
+                      attributes:
+                        name: Diving
+                        exercise_type: endurance
+                        explanation: Numquam laboriosam nesciunt recusandae dolorem
+                          soluta. Numquam vitae voluptates minus adipisci. Ipsam impedit
+                          ratione maiores ab amet nobis. Consequatur aliquam est omnis
+                          eius quisquam.
+                    - id: '127'
+                      type: exercise
+                      attributes:
+                        name: Nascar
+                        exercise_type: strength
+                        explanation: Inventore repudiandae consequatur natus quidem
+                          mollitia in laborum. Omnis dolore quos possimus vitae minus
+                          dolorum adipisci. Eius dolorem quibusdam voluptatem quo.
+                          Quis maiores sunt nisi voluptates cum doloribus.
+        '401':
+          description: unauthorized
+  "/api/v1/exercises/{id}":
+    get:
+      summary: show exercise
+      security:
+      - api_key: []
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              examples:
+                test_example:
+                  value:
+                    data:
+                      id: '128'
+                      type: exercise
+                      attributes:
+                        name: Mountain Bike
+                        exercise_type: strength
+                        explanation: Et harum beatae velit inventore quibusdam architecto
+                          tenetur voluptatum. Saepe corrupti perspiciatis explicabo
+                          voluptatibus consequatur. Nam iure odit sapiente sit eaque.
+        '401':
+          description: unauthorized
+        '404':
+          description: not_found entity
+  "/api/v1/progresses":
+    get:
+      summary: list progresses
+      security:
+      - api_key: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              examples:
+                test_example:
+                  value:
+                    data:
+                    - id: '24'
+                      type: progress
+                      attributes:
+                        metric_values:
+                        - 25
+                        additional_weight: false
+                      relationships:
+                        user:
+                          data:
+                            id: '199'
+                            type: user
+                        exercise:
+                          data:
+                            id: '130'
+                            type: exercise
+                    - id: '25'
+                      type: progress
+                      attributes:
+                        metric_values:
+                        - 4
+                        - 9
+                        additional_weight: true
+                      relationships:
+                        user:
+                          data:
+                            id: '199'
+                            type: user
+                        exercise:
+                          data:
+                            id: '131'
+                            type: exercise
+        '401':
+          description: unauthorized
+    post:
+      summary: create progress
+      security:
+      - api_key: []
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              examples:
+                test_example:
+                  value:
+                    data:
+                      id: '26'
+                      type: progress
+                      attributes:
+                        metric_values:
+                        - 19
+                        additional_weight: false
+                      relationships:
+                        user:
+                          data:
+                            id: '200'
+                            type: user
+                        exercise:
+                          data:
+                            id: '132'
+                            type: exercise
+        '401':
+          description: unauthorized
+        '422':
+          description: unprocessable entity
+          content:
+            application/json:
+              examples:
+                test_example:
+                  value:
+                    metric_values:
+                    - can't be blank
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                exercise_id:
+                  type: integer
+                metric_values:
+                  type: array
+                additional_weight:
+                  type: boolean
+              required:
+              - exercise_id
+              - metric_values
+  "/api/v1/registration":
+    post:
+      summary: Create user
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              examples:
+                test_example:
+                  value:
+                    data:
+                      id: '203'
+                      type: session
+                      attributes:
+                        username: Bettyann
+                      meta:
+                        token: eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MjAzLCJleHAiOjE2NTMxNjU1Mjh9.m82nWETNVroGyc_vQzUypDB0063WbTAE4ysZceUw_pw
+        '422':
+          description: unprocessable entity
+          content:
+            application/json:
+              examples:
+                test_example:
+                  value:
+                    password:
+                    - can't be blank
+                    username:
+                    - can't be blank
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+              - username
+              - password
+  "/api/v1/session":
+    post:
+      summary: create session
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              examples:
+                test_example:
+                  value:
+                    data:
+                      id: '204'
+                      type: session
+                      attributes:
+                        username: Christina
+                      meta:
+                        token: eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MjA0LCJleHAiOjE2NTMxNjU1Mjh9.jj5s-JoPEo9P_lyvcUWaaCd9cLzoP5rtl5RBGibwc84
+        '401':
+          description: unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+              - username
+              - password
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
